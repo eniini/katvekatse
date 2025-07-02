@@ -8,15 +8,31 @@ async def identify_plant(image_bytes):
 	files = {
 		'images': ('plant.jpg', image_bytes, 'image/jpeg')
 	}
+	data = {
+		'organs': 'leaf',  # Specify the organ type if needed, e.g., 'leaf', 'flower', etc.
+	}
 	params = {
+		'include-related-images': 'false',  # Include related images in the response
+		'no-reject': 'false',
+		'nb-results': '1',  # Number of results to return
+		'lang': 'en',  # Language for the response
 		'api-key': PLANTNET_API_KEY
+	}
+	headers = {
+		'accept': 'application/json',
 	}
 
 	print(f"Sending request to PlantNet API with {len(image_bytes)} bytes of image data.")
 
 	async with httpx.AsyncClient() as client:
 		try:
-			response = await client.post(PLANTNET_API_URL, files=files, params=params)
+			response = await client.post(
+				PLANTNET_API_URL,
+				params=params,
+				files=files,
+				data=data,
+				headers=headers
+			)
 
 			print(f"PlantNet API response status code: {response.status_code}")
 			print(f"PlantNet API response headers: {response.headers}")
@@ -31,6 +47,7 @@ async def identify_plant(image_bytes):
 			return ({"error": "HTTP error occurred",
 			"status_code": e.response.status_code,
 			"message": {e.response.text[:300]}})
+
 		except Exception as e:
 			print(f"Unexpected error: {e}")
 			return {
