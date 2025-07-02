@@ -1,7 +1,7 @@
 import httpx
 import os
 
-PLANTNET_API_URL = "https://my.plantnet.org/v2/identify/all"
+PLANTNET_API_URL = "https://my-api.plantnet.org/v2/identify/all"
 PLANTNET_API_KEY = os.getenv("PLANTNET_API_KEY")
 
 async def identify_plant(image_bytes):
@@ -9,7 +9,7 @@ async def identify_plant(image_bytes):
 		'images': ('plant.jpg', image_bytes, 'image/jpeg')
 	}
 	data = {
-		'organs': 'leaf',  # Specify the organ type if needed, e.g., 'leaf', 'flower', etc.
+		'organs': 'auto',  # Specify the organ type if needed, e.g., 'leaf', 'flower', etc.
 	}
 	params = {
 		'include-related-images': 'false',  # Include related images in the response
