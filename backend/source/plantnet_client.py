@@ -27,8 +27,13 @@ async def identify_plant(image_bytes):
 			return response.json()
 
 		except httpx.HTTPStatusError as e:
-			print(f"HTTP error occurred: {e.response.status_code} - {e.response.text}")
-			return ({"error": "HTTP error occurred", "status_code": e.response.status_code, "message": str(e)})
+			print(f"HTTP error occurred: {e.response.status_code} - {e.response.text[:300]}")
+			return ({"error": "HTTP error occurred",
+			"status_code": e.response.status_code,
+			"message": {e.response.text[:300]}})
 		except Exception as e:
 			print(f"Unexpected error: {e}")
-			return {"error": str(e)}
+			return {
+				"error": "Unknown backend error",
+				"message": str(e)
+			}
