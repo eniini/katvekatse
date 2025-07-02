@@ -1,7 +1,7 @@
 pyvenv.cfg
 Scripts
-Lib
-!lib/
+/Lib/
+!/application/lib/
 Include
 *.pyc
 .env
